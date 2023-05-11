@@ -22,7 +22,7 @@ let _ =
     | Some bytes -> bytes
     | None -> Bytes.empty
   in
-  match Stb.read_from_memory u8 rgba bytes with
+  match Stb.read_u8_from_memory rgba bytes with
   | Ok _ -> print_endline "Ok"
   | Error err -> print_endline @@ Error.to_string err
 
