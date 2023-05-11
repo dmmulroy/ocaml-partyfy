@@ -1,0 +1,4 @@
+(executable
+ (public_name ocaml_partyfy)
+ (name main)
+ (libraries ocaml_partyfy base bimage bimage-unix stdio))
