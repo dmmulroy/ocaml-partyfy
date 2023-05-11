@@ -1,6 +1,8 @@
+open Bimage
+open Bimage_unix
 open Stdio
 
-let write_bytes_to_file (file_path : string) (bytes : Bytes.t) : unit =
+let _write_bytes_to_file (file_path : string) (bytes : Bytes.t) : unit =
   Out_channel.with_file file_path ~f:(fun channel ->
       Out_channel.output_string channel @@ Bytes.to_string bytes)
 
@@ -15,6 +17,16 @@ let read_file_to_bytes (file_path : string) : Bytes.t option =
   In_channel.with_file file_path ~f:read_channel_to_bytes
 
 let _ =
-  match read_file_to_bytes "ocaml-logo.png" with
-  | Some bytes -> write_bytes_to_file "ocaml-logo-copy.png" bytes
-  | None -> printf "Error reading file\n"
+  let bytes =
+    match read_file_to_bytes "ocaml-logo.png" with
+    | Some bytes -> bytes
+    | None -> Bytes.empty
+  in
+  match Stb.read_from_memory u8 rgba bytes with
+  | Ok _ -> print_endline "Ok"
+  | Error err -> print_endline @@ Error.to_string err
+
+(* let _ = *)
+(*   match Stb.read_u8 rgba "ocaml-logo.png" with *)
+(*   | Ok _ -> print_endline "ok" *)
+(*   | Error err -> print_endline @@ Error.to_string err *)
